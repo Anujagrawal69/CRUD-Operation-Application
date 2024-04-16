@@ -12,15 +12,15 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController ageController = new TextEditingController();
-  TextEditingController locationController = new TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        title: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             "Employee",
             style: TextStyle(
@@ -36,9 +36,9 @@ class _EmployeeState extends State<Employee> {
         ]),
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 15, top: 30, right: 15),
+        margin: const EdgeInsets.only(left: 15, top: 30, right: 15),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
+          const Text(
             "Name: ",
             style: TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
@@ -46,22 +46,22 @@ class _EmployeeState extends State<Employee> {
           Container(
             decoration: BoxDecoration(
               border: Border.all(),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
             ),
             child: TextField(
               controller: nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(left: 10),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
             "Age: ",
             style: TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
@@ -69,22 +69,22 @@ class _EmployeeState extends State<Employee> {
           Container(
             decoration: BoxDecoration(
               border: Border.all(),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
             ),
             child: TextField(
               controller: ageController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(left: 10),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
             "Location: ",
             style: TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
@@ -92,19 +92,19 @@ class _EmployeeState extends State<Employee> {
           Container(
             decoration: BoxDecoration(
               border: Border.all(),
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
             ),
             child: TextField(
               controller: locationController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(left: 10),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           Center(
@@ -130,7 +130,7 @@ class _EmployeeState extends State<Employee> {
                       fontSize: 16.0);
                 });
               },
-              child: Text(
+              child: const Text(
                 "Add",
                 style: TextStyle(
                     color: Colors.black,

@@ -11,6 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  // ignore: non_constant_identifier_names
   Stream? EmployeeStream;
   getontheload() async {
     EmployeeStream = await DatabaseMethods().getEmployeeDetails();
@@ -36,7 +40,7 @@ class _HomeState extends State<Home> {
                     child: Material(
                       elevation: 5,
                       child: Container(
-                        margin: EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(15),
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,25 +49,45 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  // ignore: prefer_interpolation_to_compose_strings
                                   "Name: " + ds["Name"],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.blue,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Icon(Icons.edit),
+                                GestureDetector(
+                                  onTap: () {
+                                    nameController.text = ds["Name"];
+                                    ageController.text = ds["Age"];
+                                    locationController.text = ds["Location"];
+
+                                    editEmployeeDetails(ds["Id"], context);
+                                  },
+                                  child: const Icon(Icons.edit),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await DatabaseMethods()
+                                        .deleteEmployeeDetails(ds["Id"]);
+                                    // setState(() {});
+                                  },
+                                  child: const Icon(Icons.delete),
+                                ),
                               ],
                             ),
                             Text(
+                              // ignore: prefer_interpolation_to_compose_strings
                               "Age: " + ds["Age"],
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.orange,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
+                              // ignore: prefer_interpolation_to_compose_strings
                               "Location: " + ds["Location"],
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.blue,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
@@ -85,12 +109,13 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Employee()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Employee()));
           },
-          child: Icon(Icons.add)),
+          child: const Icon(Icons.add)),
       appBar: AppBar(
-        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        title:
+            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             "Flutter",
             style: TextStyle(
@@ -106,11 +131,77 @@ class _HomeState extends State<Home> {
         ]),
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 15, right: 15),
+        margin: const EdgeInsets.only(left: 15, right: 15),
         child: Column(children: [
           Expanded(child: allEmployeeDetails()),
         ]),
       ),
     );
   }
+}
+
+Future<void> editEmployeeDetails(String id, BuildContext context) async {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Edit Details",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: ageController,
+                 decoration: const InputDecoration(
+                  labelText: "Age",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: locationController,
+                decoration: const InputDecoration(
+                  labelText: "Location",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  Map<String, dynamic> updateInfo = {
+                    "Name": nameController.text,
+                    "Age": ageController.text,
+                    "Location": locationController.text,
+                  };
+                  await DatabaseMethods().updateEmployeeDetails(id, updateInfo);
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: const Text("Update"),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

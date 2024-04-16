@@ -10,6 +10,21 @@ class DatabaseMethods {
   }
 
   Future<Stream<QuerySnapshot>> getEmployeeDetails() async {
-    return await FirebaseFirestore.instance.collection("Employee").snapshots();
+    return FirebaseFirestore.instance.collection("Employee").snapshots();
+  }
+
+  Future deleteEmployeeDetails(String id) async {
+    return await FirebaseFirestore.instance
+        .collection("Employee")
+        .doc(id)
+        .delete();
+  }
+
+  Future updateEmployeeDetails(
+      String id, Map<String, dynamic> updateInfo) async {
+    await FirebaseFirestore.instance
+        .collection("Employee")
+        .doc(id)
+        .update(updateInfo);
   }
 }
